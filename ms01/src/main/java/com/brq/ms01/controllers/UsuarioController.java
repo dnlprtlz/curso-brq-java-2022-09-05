@@ -17,6 +17,7 @@ import java.util.ArrayList;
 @RestController
 public class UsuarioController {
     private ArrayList<UsuarioModel> usuarios = new ArrayList<>();
+    private int counter = 1;
     /*
      * o @GetMapping permite associoar o verbo GET com a rota /usuarios
      * */
@@ -31,7 +32,9 @@ public class UsuarioController {
     }
     @PostMapping("usuarios")
     public UsuarioModel create(@RequestBody UsuarioModel usuario){
+        usuario.setId( counter );
         usuarios.add(usuario);
+        counter++;
         return usuario;
     }
 }
