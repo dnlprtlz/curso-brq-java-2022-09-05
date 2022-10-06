@@ -1,10 +1,7 @@
 package com.brq.ms01.controllers;
 
 import com.brq.ms01.models.UsuarioModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -18,23 +15,48 @@ import java.util.ArrayList;
 public class UsuarioController {
     private ArrayList<UsuarioModel> usuarios = new ArrayList<>();
     private int counter = 1;
+
     /*
      * o @GetMapping permite associoar o verbo GET com a rota /usuarios
      * */
     @GetMapping("usuarios")
-    public ArrayList<UsuarioModel> getAllUsuarios(){
-//        for (int i = 0; i < 10; i++) {
-//            UsuarioModel u = new UsuarioModel(i + 1, "usuario", "usuario@mail.com");
-//            usuarios.add(u);
-//        }
+    public ArrayList<UsuarioModel> getAllUsuarios() {
+
 //
         return usuarios;
     }
+
     @PostMapping("usuarios")
-    public UsuarioModel create(@RequestBody UsuarioModel usuario){
-        usuario.setId( counter );
+    public UsuarioModel create(@RequestBody UsuarioModel usuario) {
+        usuario.setId(counter);
         usuarios.add(usuario);
         counter++;
         return usuario;
     }
+
+    @PatchMapping("usuarios/{id}")
+    public UsuarioModel update(@RequestBody UsuarioModel usuario,
+                               @PathVariable int id) {
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getId() == id) {
+                usuarios.get(i).setNome(usuario.getNome());
+                usuarios.get(i).setEmail(usuario.getEmail());
+
+                return usuarios.get(i);
+            }
+        }
+        return null;
+    }
+    @DeleteMapping("usuarios/{id}")
+    public String delete(@PathVariable int id) {
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getId() == id) {
+                usuarios.remove(i);
+                return "Feito";
+
+            }
+        }
+        return null;
+    }
+
 }
