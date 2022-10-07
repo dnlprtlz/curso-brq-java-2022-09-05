@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //Cada professor deve ter id, nome, email , salário,  rua, número, cep
 @SpringBootApplication
 public class Ms02Application {
-
 	public static void main(String[] args) {
 		SpringApplication.run(Ms02Application.class, args);
 	}
