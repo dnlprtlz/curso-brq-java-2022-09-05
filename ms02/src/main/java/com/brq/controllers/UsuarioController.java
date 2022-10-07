@@ -1,6 +1,6 @@
-package com.brq.ms01.controllers;
+package com.brq.controllers;
 
-import com.brq.ms01.models.UsuarioModel;
+import com.brq.models.UsuarioModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
