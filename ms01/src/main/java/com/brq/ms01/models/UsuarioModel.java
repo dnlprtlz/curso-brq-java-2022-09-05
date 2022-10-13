@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Data
@@ -15,9 +16,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "usuarios")
 public class UsuarioModel {
+    @Id
     @Column(name = "id_user")
     private int id;
-    @Column(name = "name_user")
+    @Column(name = "nome_user")
     private String nome;
     @Column(name = "email_user")
     private String email;
