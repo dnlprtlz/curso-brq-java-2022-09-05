@@ -1,62 +1,46 @@
 package com.brq.controllers;
 
+import com.brq.dtos.ProfessorDTO;
 import com.brq.models.ProfessorModel;
+import com.brq.services.ProfessorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class ProfessorController {
     private ArrayList<ProfessorModel> professores = new ArrayList<>();
     private int counter = 1;
+    @Autowired
+    private ProfessorService profService;
+
 
     @GetMapping("professores")
-    public ArrayList<ProfessorModel> getAllProfessores() {
-        return professores;
+    public List<ProfessorDTO> getAllProfessores() {
+        profService.mostrarMensagemService();
+        return profService.getAllProfessores();
+    }
+    @GetMapping("professores/{id}")
+    public ProfessorDTO getOne(@PathVariable int id) {
+        return profService.getOne(id);
     }
 
     @PostMapping("professores")
-    public ProfessorModel create(@RequestBody ProfessorModel professor) {
-        professor.setId(counter);
-        professores.add(professor);
-        counter++;
-        return professor;
+    public ProfessorDTO create(@Valid @RequestBody ProfessorDTO professor) {
+        var prof = profService.create(professor);
+        return prof;
     }
-
     @PatchMapping("professores/{id}")
-    public ProfessorModel update(@RequestBody ProfessorModel professor,
-                               @PathVariable int id) {
-        //noinspection ForLoopReplaceableByForEach
-        for (int i = 0; i < professores.size(); i++) {
-            if (professores.get(i).getId() == id) {
-                professores.get(i).setNome(professor.getNome());
-                professores.get(i).setEmail(professor.getEmail());
-                professores.get(i).setSalario(professor.getSalario());
-                professores.get(i).setRua(professor.getRua());
-                professores.get(i).setNumero(professor.getNumero());
-                professores.get(i).setCep(professor.getCep());
-                return professores.get(i);
-            }
-        }
-        return null;
-    }
-    @GetMapping("professores/{id}")
-    public ProfessorModel getOne(@PathVariable int id) {
-        for (int i = 0; i < professores.size(); i++) {
-            if (professores.get(i).getId() == id) {
-                return professores.get(i);
-            }
-        }
-        return null;
+    public ProfessorDTO update(@RequestBody ProfessorDTO professorBody,
+                             @PathVariable int id ){
+        return profService.update(id, professorBody);
     }
     @DeleteMapping("professores/{id}")
     public String delete(@PathVariable int id) {
-        for (int i = 0; i < professores.size(); i++) {
-            if (professores.get(i).getId() == id) {
-                professores.remove(i);
-                return "Feito";
-            }
-        }
-        return null;
+        return profService.delete(id);
     }
 
 }
