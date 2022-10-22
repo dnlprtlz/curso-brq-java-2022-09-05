@@ -3,10 +3,12 @@ import com.brq.dtos.ProfessorDTO;
 import com.brq.models.ProfessorModel;
 import com.brq.repositories.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ProfessorService {
     @Autowired
     private ProfessorRepository profRepository;

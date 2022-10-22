@@ -14,20 +14,20 @@ import javax.validation.constraints.NotNull;
 public class ProfessorDTO {
 
     private int id;
-    @NotNull(message = "Preenchimento Obrigatorio")
 
+    @NotNull(message = "Preenchimento Obrigatorio")
     private String nome;
-    @NotNull(message = "Preenchimento Obrigatorio")
 
+    @NotNull(message = "Preenchimento Obrigatorio")
     private String email;
-    private String salario;
+
+    private Double salario;
     private String rua;
     private String numero;
     private String cep;
 
     public ProfessorModel toModel(){
         ModelMapper mapper = new ModelMapper();
-        ProfessorModel model = mapper.map(this, ProfessorModel.class);
-        return model;
+        return mapper.map(this, ProfessorModel.class);
     }
 }

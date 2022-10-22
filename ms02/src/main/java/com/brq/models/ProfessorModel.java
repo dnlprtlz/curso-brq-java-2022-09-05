@@ -20,25 +20,30 @@ import javax.persistence.*;
 public class ProfessorModel {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column(name = "idProfessor")
+    @Column(name = "id_professor")
     private int id;
-    @Column(name = "nomeProfessor")
+
+    @Column(name = "nome_professor")
     private String nome;
-    @Column(name = "emailProfessor")
+
+    @Column(name = "email_professor")
     private String email;
-    @Column(name = "salarioProfessor")
-    private String salario;
-    @Column(name = "ruaProfessor")
+
+    @Column(name = "salario_professor")
+    private Double salario;
+
+    @Column(name = "rua_professor")
     private String rua;
-    @Column(name = "numeroProfessor")
+
+    @Column(name = "numero_professor")
     private String numero;
-    @Column(name = "cepProfessor")
+
+    @Column(name = "cep_professor")
     private String cep;
 
     public ProfessorDTO toDTO(){
         ModelMapper mapper = new ModelMapper();
-        ProfessorDTO model = mapper.map(this, ProfessorDTO.class);
-        return model;
+        return mapper.map(this, ProfessorDTO.class);
     }
 
 }
