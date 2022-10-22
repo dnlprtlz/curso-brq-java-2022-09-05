@@ -12,11 +12,9 @@ import java.util.List;
 
 @RestController
 public class ProfessorController {
-    private ArrayList<ProfessorModel> professores = new ArrayList<>();
-    private int counter = 1;
+
     @Autowired
     private ProfessorService profService;
-
 
     @GetMapping("professores")
     public List<ProfessorDTO> getAllProfessores() {
