@@ -61,11 +61,12 @@ public class UsuarioService {
 //        usuarioDTOtoModel.setNome(usuario.getNome());
 //        usuarioDTOtoModel.setTelefone(usuario.getTelefone());
 //        usuarioDTOtoModel.setEmail(usuario.getEmail());
-        UsuarioModel usuarioSalvo = usuRepository.save( usuario.toModel() );
+        UsuarioModel usuarioSalvo = null;
+        //= usuRepository.save( usuario.toModel() );
 
         try{
             // INSERT INTO usuarios (name_user, email_user ) VALUEs()....
-            usuarioSalvo = usuRepository.save( usuario.toModel() );
+           usuarioSalvo = usuRepository.save( usuario.toModel() );
             // return  usuRepository.save( usuario );
             // return "POST Usuários";
             //return usuario;
