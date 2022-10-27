@@ -1,6 +1,8 @@
 package com.brq.ms01.services;
 
+import com.brq.ms01.dtos.EnderecoDTO;
 import com.brq.ms01.dtos.UsuarioDTO;
+import com.brq.ms01.models.EnderecoModel;
 import com.brq.ms01.models.UsuarioModel;
 import com.brq.ms01.repositories.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -81,7 +83,6 @@ public class UsuarioService {
         //return usuario;
         return usuarioSalvo.toDTO();
     }
-
     public UsuarioDTO update(int id, UsuarioDTO usuarioBody)  {
 
         UsuarioModel usuario = usuRepository.findById(id)

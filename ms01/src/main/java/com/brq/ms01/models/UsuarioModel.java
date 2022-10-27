@@ -40,6 +40,17 @@ public class UsuarioModel {
     @OneToMany(mappedBy = "usuario")
     private List<FinanciamentoModel> financiamentos;
 
+    @OneToOne(mappedBy = "usuario")
+    private EnderecoModel enderecos;
+
+    @ManyToMany
+    @JoinTable (
+            name = "usuario_consorcio",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "consorcio_id")
+    )
+    private ConsorcioModel consorcios;
+
     public UsuarioDTO toDTO(){
         ModelMapper mapper = new ModelMapper();
 

@@ -1,5 +1,6 @@
 package com.brq.ms01.controllers;
 
+import com.brq.ms01.dtos.EnderecoDTO;
 import com.brq.ms01.dtos.UsuarioDTO;
 import com.brq.ms01.models.UsuarioModel;
 import com.brq.ms01.services.UsuarioService;
@@ -26,8 +27,6 @@ public class UsuarioController {
     // @Autowired é importante pois permite que o Spring "instancie" o objeto do tipo UsuarioService
     @Autowired
     private UsuarioService usuService;
-
-
     /*
      * o @GetMapping permite associoar o verbo GET com a rota /usuarios
      * */
@@ -64,7 +63,6 @@ public class UsuarioController {
 
     } // create
 
-    // /usuarios/1 -> o valor do id vai ser 1
 
     @PatchMapping("usuarios/{id}")
     public UsuarioDTO update(@RequestBody UsuarioDTO usuarioBody,
