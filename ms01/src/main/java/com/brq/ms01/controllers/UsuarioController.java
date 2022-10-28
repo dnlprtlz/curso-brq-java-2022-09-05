@@ -91,5 +91,11 @@ public class UsuarioController {
         return usuService.getOne(id);
 
     } // getOne
+    @GetMapping("usuarios/nome/{nomeBusca}")
+    public List<UsuarioDTO> fetchUsuariosByNome(@PathVariable String nomeBusca){
+
+        return usuService.fetchUsuariosByNome(nomeBusca);
+
+    } // getOne
 
 } // UsuarioController

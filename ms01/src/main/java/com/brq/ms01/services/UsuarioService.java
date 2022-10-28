@@ -173,4 +173,12 @@ public class UsuarioService {
 //        } // for
 //        return null;
     }
+    public List<UsuarioDTO> fetchUsuariosByNome(String nomeBusca) {
+        List<UsuarioModel> list = usuRepository.findByNome(nomeBusca);
+        List<UsuarioDTO> listDTO = new ArrayList<>();
+        for (UsuarioModel user : list) {
+            listDTO.add( user.toDTO() );
+        }
+        return listDTO;
+    }
 }
