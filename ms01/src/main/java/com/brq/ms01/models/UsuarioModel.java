@@ -49,7 +49,7 @@ public class UsuarioModel {
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "consorcio_id")
     )
-    private ConsorcioModel consorcios;
+    private List<ConsorcioModel> consorcios;
 
     public UsuarioDTO toDTO(){
         ModelMapper mapper = new ModelMapper();
