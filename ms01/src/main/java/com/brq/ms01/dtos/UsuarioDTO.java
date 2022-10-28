@@ -34,7 +34,7 @@ public class UsuarioDTO {
 
     private EnderecoDTO enderecos;
 
-    private List<ConsorcioDTO>  consorcio;
+    private List<ConsorcioDTO> consorcios;
 
     public UsuarioModel toModel(){
 
