@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface UsuarioRepository extends JpaRepository<UsuarioModel, Integer> {
     List<UsuarioModel> findByNome(String nome);
-
+    List<UsuarioModel> findByNomeContains(String nome);
+    List<UsuarioModel> findByNomeContainsAndEmailContainsAndEnderecoRuaContains(String nome, String email, String rua);
 }
