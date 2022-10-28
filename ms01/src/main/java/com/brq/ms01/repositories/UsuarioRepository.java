@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface UsuarioRepository extends JpaRepository<UsuarioModel, Integer> {
-    List<UsuarioModel> findByNome(String nome);
+    //List<UsuarioModel> findByNome(String nome);
     List<UsuarioModel> findByNomeContains(String nome);
-    List<UsuarioModel> findByNomeContainsAndEmailContainsAndEnderecoRuaContains(String nome, String email, String rua);
+    //List<UsuarioModel> findByNomeContainsAndEmailContainsAndEnderecoRuaContains(String nome, String email, String rua);
+    List<UsuarioModel> findByNomeContainsAndEmailContains(String nome, String email);
+
 }

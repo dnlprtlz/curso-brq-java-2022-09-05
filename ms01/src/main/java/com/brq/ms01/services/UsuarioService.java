@@ -181,4 +181,13 @@ public class UsuarioService {
         }
         return listDTO;
     }
+    public List<UsuarioDTO> fetchUsuariosByNomeContainsAndEmailContains(String nomeBusca,String emailBusca) {
+        List<UsuarioModel> list = usuRepository.findByNomeContainsAndEmailContains(nomeBusca, emailBusca);
+        List<UsuarioDTO> listDTO = new ArrayList<>();
+        for (UsuarioModel user : list) {
+            listDTO.add( user.toDTO() );
+        }
+        return listDTO;
+    }
+
 }

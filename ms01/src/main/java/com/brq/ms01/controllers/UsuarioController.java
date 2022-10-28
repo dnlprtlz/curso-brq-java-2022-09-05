@@ -98,4 +98,11 @@ public class UsuarioController {
 
     } // getOne
 
+    @GetMapping("usuarios/nome/{nomeBusca}")
+    public List<UsuarioDTO> fetchUsuariosByNomeContainsAndEmail(@PathVariable String nomeBusca, @RequestBody String emailBusca){
+
+        return usuService.fetchUsuariosByNomeContainsAndEmailContains(nomeBusca, emailBusca);
+
+    } // getOne
+
 } // UsuarioController
