@@ -43,7 +43,8 @@ public class UsuarioModel {
     @OneToOne(mappedBy = "usuario")
     private EnderecoModel enderecos;
 
-    @ManyToMany
+//    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable (
             name = "usuario_consorcio",
             joinColumns = @JoinColumn(name = "usuario_id"),
