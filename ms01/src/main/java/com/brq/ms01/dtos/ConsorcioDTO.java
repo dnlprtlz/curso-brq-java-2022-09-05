@@ -1,7 +1,5 @@
 package com.brq.ms01.dtos;
 
-import com.brq.ms01.models.ConsorcioModel;
-import com.brq.ms01.models.UsuarioModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

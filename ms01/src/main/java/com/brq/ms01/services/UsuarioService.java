@@ -1,8 +1,6 @@
 package com.brq.ms01.services;
 
-import com.brq.ms01.dtos.EnderecoDTO;
 import com.brq.ms01.dtos.UsuarioDTO;
-import com.brq.ms01.models.EnderecoModel;
 import com.brq.ms01.models.UsuarioModel;
 import com.brq.ms01.repositories.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 /*
@@ -44,6 +43,16 @@ public class UsuarioService {
         // Tipo da variável -
         for (UsuarioModel balde : list) {
             listDTO.add( balde.toDTO() );
+//            UsuarioDTO dto = UsuarioDTO
+//                    .builder()
+//                    .id(balde.getId())
+//                    .email(balde.getEmail())
+//                    .nome(balde.getNome())
+//                    .endereco( balde.getEndereco() == null ? null : balde.getEndereco().toDTO())
+//                    .consorcios( balde.getConsorcios().isEmpty() ? null : balde.getConsorcios().stream().map( x -> x.toDTO() ).collect(Collectors.toList()))
+//                    .build();
+//
+//            listDTO.add( dto );
         }
 
         return listDTO;
@@ -63,12 +72,12 @@ public class UsuarioService {
 //        usuarioDTOtoModel.setNome(usuario.getNome());
 //        usuarioDTOtoModel.setTelefone(usuario.getTelefone());
 //        usuarioDTOtoModel.setEmail(usuario.getEmail());
+
         UsuarioModel usuarioSalvo = null;
-        //= usuRepository.save( usuario.toModel() );
 
         try{
             // INSERT INTO usuarios (name_user, email_user ) VALUEs()....
-           usuarioSalvo = usuRepository.save( usuario.toModel() );
+            usuarioSalvo = usuRepository.save( usuario.toModel() );
             // return  usuRepository.save( usuario );
             // return "POST Usuários";
             //return usuario;
@@ -76,13 +85,12 @@ public class UsuarioService {
         }
         catch (Exception exception){
             log.error("Erro ao salvar o usuário: " + exception.getMessage());
+            //log.error("Erro ao salvar o usuário: ");
         }
-        // INSERT INTO usuarios (name_user, email_user ) VALUEs()....
-        // return  usuRepository.save( usuario );
-        // return "POST Usuários";
-        //return usuario;
+
         return usuarioSalvo.toDTO();
     }
+
     public UsuarioDTO update(int id, UsuarioDTO usuarioBody)  {
 
         UsuarioModel usuario = usuRepository.findById(id)
@@ -173,21 +181,43 @@ public class UsuarioService {
 //        } // for
 //        return null;
     }
-    public List<UsuarioDTO> fetchUsuariosByNome(String nomeBusca) {
-        List<UsuarioModel> list = usuRepository.findByNomeContains(nomeBusca);
+
+    public List<UsuarioDTO> fetchUsuariosByNome(String nomeBusca){
+
+        // pesquisa pelo findBy
+        //List<UsuarioModel> list = usuRepository.findByNome(nomeBusca);
+        //List<UsuarioModel> list = usuRepository.findByNomeContains(nomeBusca);
+
+        // usando JPQL
+        // List<UsuarioModel> list = usuRepository.fetchByNomeLike(nomeBusca);
+
+        // usando Native Query
+        List<UsuarioModel> list = usuRepository.fetchByNomeLikeNativeQuery(nomeBusca);
+
+
         List<UsuarioDTO> listDTO = new ArrayList<>();
-        for (UsuarioModel user : list) {
-            listDTO.add( user.toDTO() );
+
+        // Tipo da variável -
+        for (UsuarioModel balde : list) {
+            listDTO.add( balde.toDTO() );
         }
-        return listDTO;
-    }
-    public List<UsuarioDTO> fetchUsuariosByNomeContainsAndEmailContains(String nomeBusca,String emailBusca) {
-        List<UsuarioModel> list = usuRepository.findByNomeContainsAndEmailContains(nomeBusca, emailBusca);
-        List<UsuarioDTO> listDTO = new ArrayList<>();
-        for (UsuarioModel user : list) {
-            listDTO.add( user.toDTO() );
-        }
+
         return listDTO;
     }
 
+    public List<UsuarioDTO> fetchUsuariosByNomeAndEmail(String nomeBusca, String emailBusca){
+
+        //List<UsuarioModel> list = usuRepository.findByNome(nomeBusca);
+        List<UsuarioModel> list = usuRepository.findByNomeContainsAndEmailContains(nomeBusca, emailBusca);
+
+
+        List<UsuarioDTO> listDTO = new ArrayList<>();
+
+        // Tipo da variável -
+        for (UsuarioModel balde : list) {
+            listDTO.add( balde.toDTO() );
+        }
+
+        return listDTO;
+    }
 }
