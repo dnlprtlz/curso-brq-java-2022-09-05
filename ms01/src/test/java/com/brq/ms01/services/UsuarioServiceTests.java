@@ -1,6 +1,7 @@
 package com.brq.ms01.services;
 
 import com.brq.ms01.dtos.UsuarioDTO;
+import com.brq.ms01.exceptions.DataCreateException;
 import com.brq.ms01.models.UsuarioModel;
 import com.brq.ms01.repositories.UsuarioRepository;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 /*
@@ -63,6 +66,38 @@ public class UsuarioServiceTests {
 
     }
     @Test
+    void getAllUsuarios2Test(){
+
+        // o primeiro passo é simular (mockar) os objetos que preciso
+        List<UsuarioModel> listMock = new ArrayList<>();
+
+        String nome = "Teste";
+        int id = 1;
+
+        UsuarioModel usuarioModel = new UsuarioModel();
+        usuarioModel.setId(id);
+        usuarioModel.setNome(nome);
+        usuarioModel.setTelefone("Meu telefone");
+
+        listMock.add(usuarioModel);
+
+        // quando o findAll da camada repository for acionado, retorno a lista acima
+        when ( usuarioRepository.findAll() )
+                .thenReturn( listMock );
+
+        // executar o método de desejo de teste
+        List<UsuarioDTO> resultadoAtual = usuarioService.getAllUsuarios2();
+
+        assertThat(resultadoAtual.get(0).getNome() )
+                .isEqualTo(nome + "JAVA");
+        assertThat(resultadoAtual.get(0).getTelefone())
+                .isEqualTo(usuarioModel.getTelefone());
+        assertThat(resultadoAtual.get(0).getId())
+                .isEqualTo(id * 2);
+
+    }
+
+    @Test
     void createWhenSuccess(){
 
         String email = "email";
@@ -88,5 +123,17 @@ public class UsuarioServiceTests {
         assertThat(salvoDTO.getEmail()).isEqualTo(email);
         assertThat(salvoDTO.getId()).isGreaterThan(0);
 
+    }
+
+    /*Quando entrar dentro do catch*/
+    @Test
+    void createWhenFail(){
+        // mockar o uso do save
+        when(usuarioRepository.save( null ))
+                .thenThrow( new DataCreateException("Uma mensagem") );
+
+        // testar o método em questão
+        assertThrows( DataCreateException.class,
+                () -> usuarioService.create(null)  );
     }
 }
