@@ -10,9 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 
 /*
  * A camada Service é responsável por armazenar as regras de negócio da aplicação
@@ -117,6 +114,7 @@ public class UsuarioService {
 
     public UsuarioDTO update(int id, UsuarioDTO usuarioBody)  {
 
+        // TODO: fazer uma exceção para quando não encontrar o dado. Sugestão: ObjNotFountException. Retornar status 404
         UsuarioModel usuario = usuRepository.findById(id)
                 .orElseThrow( () -> new RuntimeException("Usuário não localizado") );
 
@@ -175,6 +173,9 @@ public class UsuarioService {
 //            } // if
 //        } // for
 //        return "Usuário não encontrado";
+
+        usuRepository.findById(id)
+                .orElseThrow( () -> new RuntimeException("Usuário não localizado") );
 
         usuRepository.deleteById(id);
         return "Usuário delatado com sucesso!";

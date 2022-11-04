@@ -41,11 +41,10 @@ public class UsuarioModel {
     private List<FinanciamentoModel> financiamentos;
 
     @OneToOne(mappedBy = "usuario")
-    private EnderecoModel enderecos;
+    private EnderecoModel endereco;
 
-//    @ManyToMany
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable (
+    @JoinTable(
             name = "usuario_consorcio",
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "consorcio_id")
