@@ -8,10 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
@@ -61,10 +62,7 @@ public class UsuarioControllerTests {
     @Test
     void createWhenSuccess(){
 
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setNome("nome");
-        usuarioDTO.setEmail("email");
-        usuarioDTO.setTelefone("(11) 98273-3817");
+        UsuarioDTO usuarioDTO = createValidUsuarioDTO();
 
         // mockando a service
         when(service.create(usuarioDTO))
@@ -77,6 +75,19 @@ public class UsuarioControllerTests {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(usuarioDTO);
     }
+
+//    @Test
+//    void createWhenFail(){
+//
+//        UsuarioDTO usuarioDTO = new UsuarioDTO();
+//        usuarioDTO.setNome("a");
+//        usuarioDTO.setEmail("email");
+//        usuarioDTO.setTelefone("(11)982733817");
+//
+//        assertThrows(MethodArgumentNotValidException.class ,
+//                () -> controller.create(usuarioDTO) );
+//    }
+
     @Test
     void updateTest(){
 
@@ -98,6 +109,129 @@ public class UsuarioControllerTests {
                 .isEqualTo(usuarioDTO);
     }
 
+    @Test
+    void deleteTestWhenSuccessTest(){
+        int id = 1;
+
+        when(service.delete(id))
+                .thenReturn("texto");
+
+        // testar método
+
+        final var response = controller.delete(id);
+
+        assertThat(response.getStatusCode())
+                .isEqualTo(HttpStatus.OK);
+
+        assertThat(response.getBody()).isEqualTo("texto");
+    }
+
+    @Test
+    void deleteWhenFailTest(){
+        // dado que
+        int id = 1;
+
+        // quando
+        when(service.delete(id))
+                .thenThrow(new RuntimeException("exception"));
+
+        // então (teste do método)
+        assertThrows( RuntimeException.class,
+                () -> service.delete(id));
+    }
+
+    @Test
+    void getOneWhenSucess(){
+        //dado que
+        int id = 1;
+
+        final var usuarioDTO
+                = createValidUsuarioDTO();
+
+        //quando
+        when(service.getOne(id))
+                .thenReturn(usuarioDTO);
+
+        // então
+        final var response
+                = controller.getOne(id);
+
+        // verificar o resultado
+        assertThat( response.getStatusCode() )
+                .isEqualTo(HttpStatus.OK);
+
+        assertThat( response.getBody() )
+                .isEqualTo( usuarioDTO );
+    }
+
+    @Test
+    void getOneWhenFail(){
+
+        //dado que
+        int id = 1;
+
+        // mockito
+        // quando
+        when(service.getOne(id))
+                .thenThrow( new RuntimeException("ex"));
+
+        // então
+        assertThrows( RuntimeException.class ,
+                ()-> controller.getOne(id) ) ;
+    }
+
+    @Test
+    void fetchUsuariosByNomeTest(){
+
+        // dado que
+        var nomeBusca = "nome";
+
+        final var usuarioDTO = createValidUsuarioDTO();
+        final var listUsuarios = Arrays.asList(usuarioDTO);
+//      final var listUsuarios = Arrays.asList( createValidUsuarioDTO() );
+
+        // quando
+        when(service.fetchUsuariosByNome(nomeBusca))
+                .thenReturn(listUsuarios);
+
+        // então
+        final var response
+                = controller.fetchUsuariosByNome(nomeBusca);
+
+        // validar a reposta
+
+        assertThat( response.getStatusCode())
+                .isEqualTo(HttpStatus.OK);
+        assertThat( response.getBody())
+                .isEqualTo( response.getBody() );
+
+    }
+
+    @Test
+    void fetchUsuariosByNomeAndEmailTest(){
+
+        // dado que
+        final var nomeBusca = "nome";
+        final var emailBusca = "email";
+
+        final var listUsuarios
+                = Arrays.asList( createValidUsuarioDTO() );
+
+        // quando
+        when(service.fetchUsuariosByNomeAndEmail(nomeBusca, emailBusca))
+                .thenReturn(listUsuarios);
+
+        // então
+        final var response = controller.fetchUsuariosByNomeAndEmail(nomeBusca, emailBusca);
+
+        // verificar a resposta
+        assertThat(response.getStatusCode())
+                .isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody())
+                .isEqualTo(listUsuarios);
+    }
+
+
     private UsuarioDTO createValidUsuarioDTO(){
 
         UsuarioDTO usuarioDTO = new UsuarioDTO();
@@ -107,4 +241,6 @@ public class UsuarioControllerTests {
 
         return usuarioDTO;
     }
+
+
 }
