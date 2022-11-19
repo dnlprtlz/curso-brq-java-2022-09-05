@@ -16,4 +16,7 @@ public interface IUsuarioService {
     void delete(String id);
 
     UsuarioDTO getOne(String id);
+
+    List<UsuarioDTO> findByNomeAndEmail(String nome, String email);
+
 }

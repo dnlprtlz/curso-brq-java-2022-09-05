@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "${endpointDoDanilo}")
+@RequestMapping(value = "usuarios")
 public class UsuarioController {
 
     @Autowired
@@ -51,4 +51,10 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDTO> getOne(@PathVariable String id){
         return ResponseEntity.ok().body( service.getOne(id) );
     }
+
+    @GetMapping(value = "find-by-nome/{nome}/email/{email}")
+    public ResponseEntity<List<UsuarioDTO> > findByNomeAndEmail(@PathVariable String nome, @PathVariable String email){
+        return ResponseEntity.ok().body( service.findByNomeAndEmail(nome,email));
+    }
+
 }
