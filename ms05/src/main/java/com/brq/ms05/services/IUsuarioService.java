@@ -17,6 +17,7 @@ public interface IUsuarioService {
 
     UsuarioDTO getOne(String id);
 
-    List<UsuarioDTO> findByNomeAndEmail(String nome, String email);
+    List<UsuarioDTO> findByNome(String nome);
 
+    List<UsuarioDTO> findByAllAttrs(String input);
 }
