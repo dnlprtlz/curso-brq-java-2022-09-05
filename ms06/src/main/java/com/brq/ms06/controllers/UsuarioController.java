@@ -18,9 +18,7 @@ public class UsuarioController {
     @GetMapping("usuarios")
     public ResponseEntity<List<UsuarioDTO>> getAllUsuarios(){
 
-        // usuService.mostrarMensagemService();
-
-        var usuarios = usuService.getAllUsuarios();
+        var usuarios = usuService.getAll();
 
         return ResponseEntity.ok().body(usuarios);
     }

@@ -6,9 +6,8 @@ import java.util.List;
 
 public interface IUsuarioService {
 
-    void mostrarMensagemService();
-    List<UsuarioDTO> getAllUsuarios();
-    UsuarioDTO create(UsuarioDTO usuario);
+	List<UsuarioDTO> getAll();
+	UsuarioDTO create(UsuarioDTO usuario);
     UsuarioDTO update(String id, UsuarioDTO usuarioBody);
     String delete(String id);
     UsuarioDTO getOne(String id);

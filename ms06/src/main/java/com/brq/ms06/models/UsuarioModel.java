@@ -13,22 +13,19 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@RedisHash
+@RedisHash("usuarios")
 public class UsuarioModel {
 
 	@Id
 	private String id;
-	
-	private String nome;
+
+	private String nome;	
 	private String email;
 	
-    public UsuarioDTO toDTO(){
+	   public UsuarioDTO toDTO(){
+	        final var mapper = new ModelMapper();
+	        return mapper.map(this,UsuarioDTO.class);
+	    }
 
-        ModelMapper mapper = new ModelMapper();
-
-        UsuarioDTO dto = mapper.map(this , UsuarioDTO.class );
-
-        return dto;
-    }
 	
 }
