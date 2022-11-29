@@ -3,6 +3,7 @@ package com.brq.ms06.models;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
 import com.brq.ms06.dtos.UsuarioDTO;
 
@@ -17,8 +18,9 @@ import lombok.NoArgsConstructor;
 public class UsuarioModel {
 
 	@Id
+	@Indexed
 	private String id;
-
+	@Indexed
 	private String nome;	
 	private String email;
 	
@@ -26,6 +28,5 @@ public class UsuarioModel {
 	        final var mapper = new ModelMapper();
 	        return mapper.map(this,UsuarioDTO.class);
 	    }
-
 	
 }

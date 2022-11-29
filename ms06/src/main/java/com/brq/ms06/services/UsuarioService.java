@@ -1,7 +1,8 @@
 package com.brq.ms06.services;
 
 import com.brq.ms06.dtos.UsuarioDTO;
-import com.brq.ms06.exceptions.DataCreateException;
+import com.brq.ms06.enums.MensagensExceptionEnum;
+import com.brq.ms06.exceptions.NaoAcheiException;
 import com.brq.ms06.models.UsuarioModel;
 import com.brq.ms06.repositories.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -24,52 +25,70 @@ public class UsuarioService implements IUsuarioService {
     public List<UsuarioDTO> getAll(){
         final var list = (List<UsuarioModel>) repository.findAll();
 
-        return list.stream().map( UsuarioModel::toDTO)
+        return list
+        		.stream()
+        		.map( UsuarioModel::toDTO)
                 .collect(Collectors.toList());
     }
-        
-    public UsuarioDTO create(UsuarioDTO usuario){
-        UsuarioModel usuarioSalvo = null;
 
-        try{
-            usuarioSalvo = repository.save( usuario.toModel() );
-            log.info(usuarioSalvo.toString());
-            return usuarioSalvo.toDTO();
-        }
-        catch (Exception exception){
-            log.error("Erro ao salvar o usuário: " + exception.getMessage());
-            throw new DataCreateException("Erro ao salvar usuário");
-        }
+    public List<UsuarioDTO> findByNome(String nome){
+    	
+    	
+        final var list = (List<UsuarioModel>) repository.findByNome(nome);
+
+        return list
+        		.stream()
+        		.map( UsuarioModel::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public UsuarioDTO update(String id, UsuarioDTO usuarioBody)  {
+    public List<UsuarioDTO> searchByNome(String nome){
+    	
+    	
+        final var list = (List<UsuarioModel>) repository.searchByNome(nome);
 
-        UsuarioModel usuario = repository.findById(id)
-                .orElseThrow( () -> new RuntimeException("Usuário não localizado") );
-
-
-        usuario.setEmail( usuarioBody.getEmail() );
-        usuario.setNome( usuarioBody.getNome() );
-
-        return repository.save(usuario).toDTO();
-
+        return list
+        		.stream()
+        		.map( UsuarioModel::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public String delete(String id){
+    
+    public UsuarioDTO create(UsuarioModel model){
 
-        final var usuario = repository.findById(id)
-                .orElseThrow( () -> new RuntimeException("Usuário não localizado") );
+        final var obj = repository.save(model);
 
-        repository.deleteById(usuario.getId());
-        return "Usuário delatado com sucesso!";
+        return obj.toDTO();
     }
 
-    public UsuarioDTO getOne(String id){
+    public UsuarioDTO update(String id, UsuarioDTO dto){
 
-        UsuarioModel usuario = repository.findById(id)
-                    .orElseThrow( () -> new RuntimeException("Usuário não localizado"));
+        var usuario = repository.findById(id)
+                .orElseThrow( () -> new NaoAcheiException(
+                        MensagensExceptionEnum.USUARIO_NAO_ENCONTRADO.getMensagem())
+                );
+
+        usuario.setEmail(dto.getEmail());
+        usuario.setNome(dto.getNome());
+
+        usuario = repository.save(usuario);
 
         return usuario.toDTO();
     }
 
+    public void delete(String id){
+
+        final var usuario = repository.findById(id)
+                .orElseThrow( () -> new NaoAcheiException(MensagensExceptionEnum.USUARIO_NAO_ENCONTRADO.getMensagem()) );
+
+        repository.deleteById(usuario.getId());
+    }
+
+    public UsuarioDTO getOne(String id){
+
+        final var usuario = repository.findById(id)
+                .orElseThrow( () -> new NaoAcheiException(MensagensExceptionEnum.USUARIO_NAO_ENCONTRADO.getMensagem()) );
+
+        return usuario.toDTO();
+    }
 }
