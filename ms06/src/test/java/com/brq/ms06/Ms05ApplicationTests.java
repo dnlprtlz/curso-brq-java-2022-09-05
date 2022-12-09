@@ -1,4 +1,4 @@
-package com.brq.ms05;
+package com.brq.ms06;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -1,94 +1,143 @@
 package com.brq.ms06.services;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
 import com.brq.ms06.dtos.UsuarioDTO;
 import com.brq.ms06.enums.MensagensExceptionEnum;
 import com.brq.ms06.exceptions.NaoAcheiException;
 import com.brq.ms06.models.UsuarioModel;
 import com.brq.ms06.repositories.UsuarioRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-//import java.util.ArrayList;
-//import java.util.Collection;
-import java.util.List;
-//import java.util.Optional;
-import java.util.stream.Collectors;
-
-@Slf4j
 @Service
 public class UsuarioService implements IUsuarioService {
-    
-    @Autowired
-    private UsuarioRepository repository;
-    
-    public List<UsuarioDTO> getAll(){
-        final var list = (List<UsuarioModel>) repository.findAll();
 
-        return list
-        		.stream()
-        		.map( UsuarioModel::toDTO)
-                .collect(Collectors.toList());
-    }
+	@Autowired
+	private UsuarioRepository repository;
+	
+	@Override
+	public List<UsuarioDTO> getAll() {
+		
+		final var list = (List<UsuarioModel>) repository.findAll();
+		
+		return list
+				.stream()
+				.map( UsuarioModel::toDTO)
+				.collect(Collectors.toList());
+	}
 
-    public List<UsuarioDTO> findByNome(String nome){
-    	
-    	
-        final var list = (List<UsuarioModel>) repository.findByNome(nome);
+	@Override
+	public UsuarioDTO getOne(String id) {
+		
+		final var response = repository.findById(id)
+				.orElseThrow( () -> new NaoAcheiException(MensagensExceptionEnum.USUARIO_NAO_ENCONTRADO.getMensagem()));
+		
+		return response.toDTO();
+	}
 
-        return list
-        		.stream()
-        		.map( UsuarioModel::toDTO)
-                .collect(Collectors.toList());
-    }
+	@Override
+	public UsuarioDTO create(UsuarioModel model) {
+		
+		return repository.save(model).toDTO();
+	}
 
-    public List<UsuarioDTO> searchByNome(String nome){
-    	
-    	
-        final var list = (List<UsuarioModel>) repository.searchByNome(nome);
+	@Override
+	public UsuarioDTO update(String id, UsuarioDTO dto) {
+		
+		final var response = repository.findById(id)
+				.orElseThrow( () -> new NaoAcheiException(MensagensExceptionEnum.USUARIO_NAO_ENCONTRADO.getMensagem()));
+		
+		response.setEmail(dto.getEmail());
+		response.setNome(dto.getNome());
+		
+		return repository.save(response).toDTO();
+	}
 
-        return list
-        		.stream()
-        		.map( UsuarioModel::toDTO)
-                .collect(Collectors.toList());
-    }
+	@Override
+	public void delete(String id) {
+		
+		final var response = repository.findById(id)
+				.orElseThrow( () -> new NaoAcheiException(MensagensExceptionEnum.USUARIO_NAO_ENCONTRADO.getMensagem()));
+		
+		repository.deleteById(response.getId());		
+	}
 
-    
-    public UsuarioDTO create(UsuarioModel model){
+	@Override
+	public List<UsuarioDTO> findByNome(String nome) {
+		
+		final var list = repository.findByNome(nome);
+		
+		return list
+				.stream()
+				.map(UsuarioModel::toDTO)
+				.collect(Collectors.toList());
+	}
 
-        final var obj = repository.save(model);
+	@Override
+	public List<UsuarioDTO> findByNomeContains(String input) {
+		
+		final var list = (List<UsuarioModel>) repository.findAll();
+		
+//		List<UsuarioDTO> listDTO = new ArrayList<>();
+//		
+//		/* 1-) percorrer toda a lista e procurar o que está dentro da variável input em todos os nomes da lista
+//		 * 
+//		 * */
+//		
+//		for (UsuarioModel usuario : list) {
+//			
+//			if (usuario.getNome().contains(input)) {
+//				listDTO.add(usuario.toDTO());
+//			}
+//		}
+//		
+//		return listDTO;
+		
+		// input%
+		return list
+				.stream()
+				.filter( element -> element.getNome().contains(input) || element.getEmail().contains(input) )
+				.map(UsuarioModel::toDTO)
+				.collect(Collectors.toList());
+	}
 
-        return obj.toDTO();
-    }
+	@Override
+	public void insertMany(int times) {
+		
+		List<UsuarioModel> list = new ArrayList<>();
+		
+		for (int i = 0; i < times; i++) {
+			
+			final var u = UsuarioModel
+					.builder()
+					.nome("Usuario " + i)
+					//.email("usuario"+i+"@gmail.com")
+					.email("usuario@gmail.com")
+					.build();
+			//repository.save(u);
+			list.add(u);
+		}
 
-    public UsuarioDTO update(String id, UsuarioDTO dto){
-
-        var usuario = repository.findById(id)
-                .orElseThrow( () -> new NaoAcheiException(
-                        MensagensExceptionEnum.USUARIO_NAO_ENCONTRADO.getMensagem())
-                );
-
-        usuario.setEmail(dto.getEmail());
-        usuario.setNome(dto.getNome());
-
-        usuario = repository.save(usuario);
-
-        return usuario.toDTO();
-    }
-
-    public void delete(String id){
-
-        final var usuario = repository.findById(id)
-                .orElseThrow( () -> new NaoAcheiException(MensagensExceptionEnum.USUARIO_NAO_ENCONTRADO.getMensagem()) );
-
-        repository.deleteById(usuario.getId());
-    }
-
-    public UsuarioDTO getOne(String id){
-
-        final var usuario = repository.findById(id)
-                .orElseThrow( () -> new NaoAcheiException(MensagensExceptionEnum.USUARIO_NAO_ENCONTRADO.getMensagem()) );
-
-        return usuario.toDTO();
-    }
+		repository.saveAll(list);
+	}
+	
+	public Page<UsuarioModel> findByEmail(String email, int page, int limit){
+		
+		final var pageRequest = PageRequest.of(page, limit);
+		
+		Page<UsuarioModel> response = repository.findByEmail(email, pageRequest);
+		
+		return response;
+	}
+	
+	public void deleteAll() {
+		repository.deleteAll();
+	}
+	
 }

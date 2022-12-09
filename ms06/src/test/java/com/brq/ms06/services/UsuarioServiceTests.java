@@ -1,14 +1,15 @@
-package com.brq.ms05.services;
+package com.brq.ms06.services;
 
-import com.brq.ms05.exceptions.NaoAcheiException;
-import com.brq.ms05.models.UsuarioModel;
-import com.brq.ms05.repositories.UsuarioRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.brq.ms06.exceptions.NaoAcheiException;
+import com.brq.ms06.models.UsuarioModel;
+import com.brq.ms06.repositories.UsuarioRepository;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -215,49 +216,6 @@ class UsuarioServiceTests {
 
         // então e validação
         assertThrows( NaoAcheiException.class, () -> service.getOne(id) );
-    }
-
-    @Test
-    void findByNomeTest(){
-
-        String nomeInput = "nome-busca";
-        String id = "1";
-        String nome = "nome";
-        String email = "email";
-        final var usuarioModel = createUsuarioModelMock(id, nome, email);
-        final var listModel = Arrays.asList(usuarioModel);
-
-        // quando
-        when(repository.findByNomeContains(nomeInput)).thenReturn(listModel);
-
-        // então
-        final var response = service.findByNome(nomeInput);
-
-        // validar teste
-        assertThat(response.get(0).getId()).isEqualTo(listModel.get(0).getId());
-        assertThat(response.get(0).getNome()).isEqualTo(listModel.get(0).getNome());
-        assertThat(response.get(0).getEmail()).isEqualTo(listModel.get(0).getEmail());
-    }
-
-    @Test
-    void findByAllAttrsTest(){
-        String input = "busca";
-        String id = "1";
-        String nome = "nome";
-        String email = "email";
-        final var usuarioModel = createUsuarioModelMock(id, nome, email);
-        final var listModel = Arrays.asList(usuarioModel);
-
-        // quando
-        when(repository.findByNomeContainsOrEmailContains(input, input)).thenReturn(listModel);
-
-        // então
-        final var response = service.findByAllAttrs(input);
-
-        // validar teste
-        assertThat(response.get(0).getId()).isEqualTo(listModel.get(0).getId());
-        assertThat(response.get(0).getNome()).isEqualTo(listModel.get(0).getNome());
-        assertThat(response.get(0).getEmail()).isEqualTo(listModel.get(0).getEmail());
     }
 
     private UsuarioModel createUsuarioModelMock(){

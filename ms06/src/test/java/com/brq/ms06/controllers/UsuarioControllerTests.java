@@ -1,7 +1,5 @@
-package com.brq.ms05.controllers;
+package com.brq.ms06.controllers;
 
-import com.brq.ms05.dtos.UsuarioDTO;
-import com.brq.ms05.services.UsuarioService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.brq.ms06.dtos.UsuarioDTO;
+import com.brq.ms06.services.UsuarioService;
 
 import java.util.Arrays;
 
@@ -127,57 +128,11 @@ class UsuarioControllerTests {
         verify(service, times(1)).getOne(id);
     }
 
-    @Test
-    void findByNomeTest(){
-        // dado que
-        String id = "1";
-        String nome = "nome";
-        String email = "email";
-        String nomeSearch = "nome-busca";
-
-        // quando
-        final var usuarioDTO = createUsuarioDTO(id, nome, email);
-        final var listDTO = Arrays.asList(usuarioDTO);
-        when(service.findByNome(nomeSearch)).thenReturn(listDTO);
-
-        // então
-        final var response = controller.findByNome(nomeSearch);
-
-        // validação
-        assertThat(response.getBody()).isEqualTo(listDTO);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        verify(service, times(1)).findByNome(nomeSearch);
-        assertThat(response.getBody().size()).isEqualTo(1);
-    }
-
-    @Test
-    void findByAllAttrs(){
-        // dado que
-        String id = "1";
-        String nome = "nome";
-        String email = "email";
-        String input = "input-busca";
-
-        // quando
-        final var usuarioDTO = createUsuarioDTO(id, nome, email);
-        final var listDTO = Arrays.asList(usuarioDTO);
-        when(service.findByAllAttrs(input)).thenReturn(listDTO);
-
-        // então
-        final var response = controller.findByAllAttrs(input);
-
-        // validação
-        assertThat(response.getBody()).isEqualTo(listDTO);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        verify(service, times(1)).findByAllAttrs(input);
-        assertThat(response.getBody().size()).isEqualTo(1);
-    }
 
     private UsuarioDTO createUsuarioDTO(){
 
         UsuarioDTO dto = new UsuarioDTO();
 
-        dto.setId("1");
         dto.setNome("nome");
         dto.setEmail("email");
 
@@ -188,7 +143,6 @@ class UsuarioControllerTests {
 
         UsuarioDTO dto = new UsuarioDTO();
 
-        dto.setId(id);
         dto.setNome(nome);
         dto.setEmail(email);
 

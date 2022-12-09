@@ -8,13 +8,15 @@ import org.springframework.data.redis.core.index.Indexed;
 import com.brq.ms06.dtos.UsuarioDTO;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@RedisHash("usuarios")
+@RedisHash
 public class UsuarioModel {
 
 	@Id
@@ -22,6 +24,7 @@ public class UsuarioModel {
 	private String id;
 	@Indexed
 	private String nome;	
+	@Indexed
 	private String email;
 	
 	   public UsuarioDTO toDTO(){

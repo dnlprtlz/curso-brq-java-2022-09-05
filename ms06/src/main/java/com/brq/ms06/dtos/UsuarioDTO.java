@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class UsuarioDTO {
 
-    private int id;
+    private String id;
 
     @NotEmpty(message = "Valor em branco")
     @NotNull(message = "Preenchimento Obrigatório")
