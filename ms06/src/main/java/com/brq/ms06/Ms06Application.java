@@ -25,8 +25,8 @@ public class Ms06Application implements CommandLineRunner {
 		final var list = usuarioService.getAll();
 		
 		if (list.size() < 100) {
-			
-			usuarioService.insertMany(100);
+			usuarioService.insertMany(500);
 		}
 	}
+
 }

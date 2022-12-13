@@ -2,12 +2,7 @@ package com.brq.ms06.exceptions;
 
 public class NaoAcheiException extends RuntimeException {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	public NaoAcheiException(String mensagem){
+    public NaoAcheiException(String mensagem){
         super(mensagem);
     }
 

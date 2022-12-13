@@ -23,13 +23,15 @@ public class UsuarioModel {
 	@Indexed
 	private String id;
 	@Indexed
-	private String nome;	
+	private String nome;
 	@Indexed
 	private String email;
 	
-	   public UsuarioDTO toDTO(){
-	        final var mapper = new ModelMapper();
-	        return mapper.map(this,UsuarioDTO.class);
-	    }
+	public UsuarioDTO toDTO() {
+		final var mapper = new ModelMapper();
+		
+		return mapper.map(this, UsuarioDTO.class);
+	}
+	
 	
 }
