@@ -29,7 +29,7 @@ public class UsuarioModel {
 	
 	public UsuarioDTO toDTO() {
 		final var mapper = new ModelMapper();
-		
+
 		return mapper.map(this, UsuarioDTO.class);
 	}
 	

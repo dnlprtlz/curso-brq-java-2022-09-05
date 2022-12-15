@@ -6,7 +6,7 @@ import lombok.*;
 @NoArgsConstructor
 public enum CanaisEntradaEnum {
     /* ENUM: São campos que possuem um valor fixo pré-definidos na aplicação
-     * */
+    * */
 
     C2("C2", "Descrição do Sinomar"),
     MOBILE("M1", "Descrição do Mobile"),
